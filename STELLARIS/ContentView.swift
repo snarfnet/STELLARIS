@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import GoogleMobileAds
 
 private enum WorkspaceTab: CaseIterable {
     case sound
@@ -65,15 +66,24 @@ struct ContentView: View {
         ZStack {
             StellarStageBackground()
 
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 14) {
-                    heroDeck
-                    workspaceTabs
-                    tabContent
+            VStack(spacing: 0) {
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 14) {
+                        heroDeck
+                        workspaceTabs
+                        tabContent
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.top, 12)
+                    .padding(.bottom, 18)
                 }
-                .padding(.horizontal, 14)
-                .padding(.top, 12)
-                .padding(.bottom, 22)
+
+                AdMobBannerView(adUnitID: "ca-app-pub-9404799280370656/8586668694")
+                    .frame(width: 320, height: 50)
+                    .padding(.top, 8)
+                    .padding(.bottom, 10)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.black.opacity(0.72))
             }
         }
         .sheet(isPresented: $showShareSheet) {
@@ -773,6 +783,30 @@ struct ContentView: View {
             midiFileURL = url
             showShareSheet = true
         }
+    }
+}
+
+private struct AdMobBannerView: UIViewRepresentable {
+    let adUnitID: String
+
+    func makeUIView(context: Context) -> BannerView {
+        let banner = BannerView(adSize: AdSizeBanner)
+        banner.adUnitID = adUnitID
+        banner.rootViewController = UIApplication.shared.stellarisRootViewController
+        banner.load(Request())
+        return banner
+    }
+
+    func updateUIView(_ uiView: BannerView, context: Context) {}
+}
+
+private extension UIApplication {
+    var stellarisRootViewController: UIViewController? {
+        connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows)
+            .first { $0.isKeyWindow }?
+            .rootViewController
     }
 }
 
