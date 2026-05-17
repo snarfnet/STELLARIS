@@ -163,7 +163,7 @@ class SynthEngine: NSObject, ObservableObject {
     }
 }
 
-enum Waveform: String, CaseIterable {
+enum Waveform: String, CaseIterable, Codable {
     case sine = "SIN"
     case square = "SQR"
     case sawtooth = "SAW"
