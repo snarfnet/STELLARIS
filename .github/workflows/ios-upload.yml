@@ -22,6 +22,8 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/asc"
           echo "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 -d > "$RUNNER_TEMP/asc/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8"
+          mkdir -p "$HOME/.appstoreconnect/private_keys"
+          cp "$RUNNER_TEMP/asc/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8" "$HOME/.appstoreconnect/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8"
           echo "ASC_KEY_PATH=$RUNNER_TEMP/asc/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8" >> "$GITHUB_ENV"
 
       - name: Set up signing
