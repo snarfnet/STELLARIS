@@ -24,8 +24,8 @@ class SamplerEngine: NSObject, ObservableObject {
         do {
             let audioFile = try AVAudioFile(forReading: url)
             self.audioFile = audioFile
-            self.sampleBuffer = audioFile.audioFormat.channelCount > 0 ?
-                AVAudioPCMBuffer(pcmFormat: audioFile.audioFormat, frameCapacity: audioFile.length) : nil
+            self.sampleBuffer = audioFile.processingFormat.channelCount > 0 ?
+                AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length)) : nil
 
             // Extract sample name from URL
             self.sampleName = url.lastPathComponent
