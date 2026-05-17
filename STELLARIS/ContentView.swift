@@ -1421,6 +1421,7 @@ struct ShareSheet: UIViewControllerRepresentable {
 extension Color {
     static let stellarisTeal = Color(red: 0.25, green: 0.95, blue: 0.87)
     static let stellarisAmber = Color(red: 1.0, green: 0.72, blue: 0.24)
+    static let stellarisAcid = Color.stellarisAmber
     static let stellarisRed = Color(red: 1.0, green: 0.22, blue: 0.18)
     static let stellarisFrost = Color(red: 0.82, green: 0.91, blue: 0.94)
     static let stellarisPanel = Color(red: 0.055, green: 0.072, blue: 0.083)

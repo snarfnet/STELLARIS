@@ -22,6 +22,7 @@ class SynthEngine: NSObject, ObservableObject {
     private var reverb: AVAudioUnitReverb?
     private var delay: AVAudioUnitDelay?
     private var chorus: AVAudioUnitDistortion?
+    private var playerNode: AVAudioPlayerNode?
     private var playerNodes: [AVAudioPlayerNode] = []
 
     // ポリフォニー対応
@@ -139,8 +140,6 @@ class SynthEngine: NSObject, ObservableObject {
     private func calculateEnvelope(time: Double) -> Double {
         let attackEnd = attackTime
         let decayEnd = attackTime + decayTime
-        let totalDuration = attackEnd + decayTime + releaseTime
-
         if time < attackEnd && attackEnd > 0 {
             return time / attackEnd
         } else if time < decayEnd {

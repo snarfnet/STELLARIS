@@ -6,9 +6,9 @@ struct WaveformVisualizer: View {
     let color: Color
 
     var body: some View {
-        Canvas { context in
-            let width = 300.0
-            let height = 80.0
+        Canvas { context, size in
+            let width = size.width
+            let height = size.height
             let samplesPerCycle = 60
 
             var path = Path()
@@ -55,9 +55,9 @@ struct SpectrumVisualizer: View {
     let color: Color
 
     var body: some View {
-        Canvas { context in
-            let width = 300.0
-            let height = 60.0
+        Canvas { context, size in
+            let width = size.width
+            let height = size.height
             let barCount = min(16, frequencies.count)
 
             for i in 0..<barCount {
