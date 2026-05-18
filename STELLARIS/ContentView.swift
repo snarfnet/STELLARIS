@@ -166,22 +166,49 @@ struct ContentView: View {
     }
 
     private var heroDeck: some View {
-        SynthPanel {
+        ZStack(alignment: .bottomLeading) {
+            Image("CollisionBackdrop")
+                .resizable()
+                .scaledToFill()
+                .frame(height: 330)
+                .clipped()
+                .overlay(
+                    LinearGradient(
+                        colors: [
+                            Color.black.opacity(0.12),
+                            Color.black.opacity(0.48),
+                            Color.black.opacity(0.86)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
+                .overlay(
+                    RadialGradient(
+                        colors: [.white.opacity(0.22), .clear],
+                        center: .center,
+                        startRadius: 8,
+                        endRadius: 220
+                    )
+                    .blendMode(.screen)
+                )
+
             VStack(spacing: 14) {
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 5) {
                         Text("STELLARIS")
-                            .font(.system(size: 30, weight: .black, design: .rounded))
+                            .font(.system(size: 34, weight: .black, design: .rounded))
                             .tracking(5)
                             .foregroundStyle(
                                 LinearGradient(
-                                    colors: [.stellarisTeal, .stellarisFrost],
+                                    colors: [.stellarisFrost, .stellarisTeal, .stellarisAmber],
                                     startPoint: .leading,
                                     endPoint: .trailing
                                 )
                             )
+                            .shadow(color: .stellarisTeal.opacity(0.75), radius: 16)
 
-                        Text("CELESTIAL SYNTHESIS ENGINE")
+                        Text("PLANETARY COLLISION SYNTH")
                             .font(.system(size: 10, weight: .bold, design: .monospaced))
                             .tracking(2)
                             .foregroundColor(.stellarisAmber)
@@ -214,6 +241,8 @@ struct ContentView: View {
 
                 WaveformVisualizer(frequency: synth.frequency, waveform: synth.waveform, color: .stellarisTeal)
                     .frame(height: 96)
+                    .background(Color.black.opacity(0.22))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
                     .overlay(alignment: .topTrailing) {
                         Text(wavetable.isEnabled ? "WAVETABLE" : "OSC")
                             .font(.system(size: 9, weight: .bold, design: .monospaced))
@@ -225,7 +254,22 @@ struct ContentView: View {
                             .padding(8)
                     }
             }
+            .padding(14)
         }
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(
+                    LinearGradient(
+                        colors: [.stellarisTeal.opacity(0.55), .white.opacity(0.16), .stellarisAmber.opacity(0.5)],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    ),
+                    lineWidth: 1.5
+                )
+        )
+        .shadow(color: .stellarisTeal.opacity(0.24), radius: 22, x: -8, y: 10)
+        .shadow(color: .stellarisAmber.opacity(0.18), radius: 22, x: 8, y: 10)
     }
 
     private var presetRail: some View {
@@ -848,15 +892,21 @@ private extension UIApplication {
 private struct StellarStageBackground: View {
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 0.012, green: 0.016, blue: 0.021),
-                    Color(red: 0.025, green: 0.038, blue: 0.047),
-                    Color(red: 0.010, green: 0.013, blue: 0.018)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
+            Image("CollisionBackdrop")
+                .resizable()
+                .scaledToFill()
+                .overlay(Color.black.opacity(0.58))
+                .overlay(
+                    LinearGradient(
+                        colors: [
+                            Color.black.opacity(0.12),
+                            Color(red: 0.005, green: 0.008, blue: 0.012).opacity(0.72),
+                            Color.black.opacity(0.9)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
             .ignoresSafeArea()
 
             Canvas { context, size in
@@ -879,10 +929,18 @@ private struct StellarStageBackground: View {
             .ignoresSafeArea()
 
             RadialGradient(
-                colors: [.stellarisTeal.opacity(0.18), .clear],
-                center: .topLeading,
+                colors: [.stellarisAmber.opacity(0.2), .clear],
+                center: .trailing,
                 startRadius: 30,
                 endRadius: 520
+            )
+            .ignoresSafeArea()
+
+            RadialGradient(
+                colors: [.stellarisTeal.opacity(0.24), .clear],
+                center: .leading,
+                startRadius: 40,
+                endRadius: 560
             )
             .ignoresSafeArea()
         }
@@ -897,12 +955,12 @@ private struct SynthPanel<Content: View>: View {
             .padding(14)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.stellarisPanel.opacity(0.86))
+                    .fill(Color.stellarisPanel.opacity(0.78))
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(
                                 LinearGradient(
-                                    colors: [Color.white.opacity(0.15), Color.stellarisTeal.opacity(0.18), Color.black.opacity(0.2)],
+                                    colors: [Color.stellarisTeal.opacity(0.22), Color.white.opacity(0.12), Color.stellarisAmber.opacity(0.16)],
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 ),
