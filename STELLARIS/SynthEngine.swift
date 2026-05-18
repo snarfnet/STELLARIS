@@ -37,10 +37,11 @@ class SynthEngine: NSObject, ObservableObject {
 
     override init() {
         super.init()
-        setupAudio()
     }
 
     private func setupAudio() {
+        guard engine == nil else { return }
+
         engine = AVAudioEngine()
         mixer = engine?.mainMixerNode
 
@@ -80,6 +81,7 @@ class SynthEngine: NSObject, ObservableObject {
     }
 
     func startNote(frequency: Double) {
+        setupAudio()
         self.frequency = frequency
         self.noteOnTime = Date()
         self.envelopePhase = 0
