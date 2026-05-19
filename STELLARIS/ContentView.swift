@@ -55,7 +55,7 @@ struct ContentView: View {
     @StateObject private var sampler = SamplerEngine()
     @StateObject private var presets = PresetManager()
 
-    @State private var midiEngine = MIDIEngine()
+    @State private var midiEngine: MIDIEngine?
     @State private var midiFileURL: URL?
     @State private var showShareSheet = false
     @State private var useChordProgression = false
@@ -101,6 +101,7 @@ struct ContentView: View {
 
     private func prepareAdsAfterLaunch() {
         guard UIDevice.current.userInterfaceIdiom == .phone else { return }
+        guard !ProcessInfo.processInfo.isiOSAppOnMac else { return }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             MobileAds.shared.start { _ in
@@ -837,7 +838,10 @@ struct ContentView: View {
     }
 
     private func exportMIDI() {
-        if let url = midiEngine.generateMIDIFile(
+        let engine = midiEngine ?? MIDIEngine()
+        midiEngine = engine
+
+        if let url = engine.generateMIDIFile(
             sequence: sequencer.sequence,
             tempo: sequencer.tempo,
             fileName: "STELLARIS_\(Date().timeIntervalSince1970).mid"
