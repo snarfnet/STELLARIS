@@ -104,11 +104,7 @@ struct ContentView: View {
         guard !ProcessInfo.processInfo.isiOSAppOnMac else { return }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            MobileAds.shared.start { _ in
-                DispatchQueue.main.async {
-                    canLoadAds = true
-                }
-            }
+            canLoadAds = true
         }
     }
 
@@ -1553,7 +1549,12 @@ struct ShareSheet: UIViewControllerRepresentable {
     let items: [Any]
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: items, applicationActivities: nil)
+        let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        if let popover = controller.popoverPresentationController {
+            popover.permittedArrowDirections = []
+            popover.sourceView = UIView()
+        }
+        return controller
     }
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
