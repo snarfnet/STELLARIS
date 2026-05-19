@@ -586,8 +586,9 @@ struct ContentView: View {
                     }
 
                     ActionButton(title: "MIDI OUT", icon: "cable.connector", color: .stellarisAmber) {
+                        let engine = ensureMIDIEngine()
                         sequencer.startSequencer { midiNote, _ in
-                            midiEngine.sendNoteOn(note: UInt8(midiNote), velocity: 100)
+                            engine.sendNoteOn(note: UInt8(midiNote), velocity: 100)
                         }
                     }
                 }
@@ -838,8 +839,7 @@ struct ContentView: View {
     }
 
     private func exportMIDI() {
-        let engine = midiEngine ?? MIDIEngine()
-        midiEngine = engine
+        let engine = ensureMIDIEngine()
 
         if let url = engine.generateMIDIFile(
             sequence: sequencer.sequence,
@@ -849,6 +849,16 @@ struct ContentView: View {
             midiFileURL = url
             showShareSheet = true
         }
+    }
+
+    private func ensureMIDIEngine() -> MIDIEngine {
+        if let midiEngine {
+            return midiEngine
+        }
+
+        let engine = MIDIEngine()
+        midiEngine = engine
+        return engine
     }
 }
 
