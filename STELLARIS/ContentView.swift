@@ -893,8 +893,8 @@ private extension UIApplication {
     var stellarisRootViewController: UIViewController? {
         connectedScenes
             .compactMap { $0 as? UIWindowScene }
-            .flatMap(\.windows)
-            .first { $0.isKeyWindow }?
+            .first { $0.activationState == .foregroundActive }?
+            .keyWindow?
             .rootViewController
     }
 }

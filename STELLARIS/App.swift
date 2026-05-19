@@ -4,8 +4,10 @@ import GoogleMobileAds
 @main
 struct STELLARISApp: App {
     init() {
-        MobileAds.shared.start { _ in
-            print("AdMob SDK initialized")
+        DispatchQueue.main.async {
+            MobileAds.shared.start { _ in
+                print("AdMob SDK initialized")
+            }
         }
     }
 
