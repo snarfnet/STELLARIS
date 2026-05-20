@@ -41,7 +41,8 @@ jobs:
             -authenticationKeyPath "$ASC_KEY_PATH" \
             -authenticationKeyID "$APP_STORE_CONNECT_API_KEY_ID" \
             -authenticationKeyIssuerID "$APP_STORE_CONNECT_API_KEY_ISSUER_ID" \
-            DEVELOPMENT_TEAM="83VGKGSQUH"
+            DEVELOPMENT_TEAM="83VGKGSQUH" \
+            CURRENT_PROJECT_VERSION="${{ github.run_number }}"
 
       - name: Export IPA
         env:
