@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd C:/Users/Windows && python3 -c \\\"\\nimport jwt, time, requests\\n\\n# ASC API setup\\nKEY_ID = 'WDXGY9WX55'\\nISSUER_ID = '2be0734f-943a-4d61-9dc9-5d9045c46fec'\\nwith open('Downloads/AuthKey...",
+  "error": "Exit code 1\nTraceback (most recent call last):\r\n  File \"<string>\", line 29, in <module>\r\n    print(f'Versions found: {len(versions[\"data\"])}')\r\n                                 ~~~~~~~~^^^^^^^^\r\nKeyError: 'data'\r\nLatest build: 7 (id=c4a121dd-e611-464e-b27e-958f3a633715)\r\nProcessing state: VALID",
+  "timestamp": "2026-05-19T12:39:04.664Z",
+  "retry_count": 1
+}
