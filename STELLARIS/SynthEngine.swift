@@ -34,6 +34,7 @@ class SynthEngine: NSObject, ObservableObject {
     private var sampleRate: Float = 44100
     private var envelopePhase: Double = 0
     private var noteOnTime: Date?
+    private var generationID: Int = 0
 
     override init() {
         super.init()
@@ -60,15 +61,25 @@ class SynthEngine: NSObject, ObservableObject {
         reverb?.wetDryMix = 35
 
         if let engine = engine, let mixer = mixer, let filter = filter, let reverb = reverb {
+            do {
+                let session = AVAudioSession.sharedInstance()
+                try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+                try session.setActive(true)
+            } catch {
+                print("Audio session error: \(error)")
+            }
+
+            let format = AVAudioFormat(standardFormatWithSampleRate: Double(sampleRate), channels: 1)!
+
             engine.attach(filter)
             engine.attach(reverb)
 
             playerNode = AVAudioPlayerNode()
             if let playerNode = playerNode {
                 engine.attach(playerNode)
-                engine.connect(playerNode, to: filter, format: nil)
-                engine.connect(filter, to: reverb, format: nil)
-                engine.connect(reverb, to: mixer, format: nil)
+                engine.connect(playerNode, to: filter, format: format)
+                engine.connect(filter, to: reverb, format: format)
+                engine.connect(reverb, to: mixer, format: format)
             }
 
             do {
@@ -86,14 +97,15 @@ class SynthEngine: NSObject, ObservableObject {
         self.noteOnTime = Date()
         self.envelopePhase = 0
         isPlaying = true
-        startAudioGeneration()
+        generationID += 1
+        startAudioGeneration(id: generationID)
     }
 
     func stopNote() {
         isPlaying = false
     }
 
-    private func startAudioGeneration() {
+    private func startAudioGeneration(id: Int) {
         let format = AVAudioFormat(standardFormatWithSampleRate: Double(sampleRate), channels: 1)!
         let bufferSize: AVAudioFrameCount = AVAudioFrameCount(sampleRate)
         guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: bufferSize) else { return }
@@ -119,8 +131,9 @@ class SynthEngine: NSObject, ObservableObject {
 
         buffer.frameLength = bufferSize
         playerNode?.scheduleBuffer(buffer) { [weak self] in
-            if self?.isPlaying == true {
-                self?.startAudioGeneration()
+            guard let self = self else { return }
+            if self.isPlaying && self.generationID == id {
+                self.startAudioGeneration(id: id)
             }
         }
     }
