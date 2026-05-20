@@ -1,6 +1,5 @@
 import SwiftUI
 import UIKit
-import GoogleMobileAds
 
 private enum WorkspaceTab: CaseIterable {
     case sound
@@ -61,7 +60,6 @@ struct ContentView: View {
     @State private var useChordProgression = false
     @State private var presetName = ""
     @State private var selectedTab: WorkspaceTab = .sound
-    @State private var canLoadAds = false
 
     var body: some View {
         ZStack {
@@ -79,32 +77,12 @@ struct ContentView: View {
                     .padding(.bottom, 18)
                 }
 
-                if canLoadAds {
-                    AdMobBannerView(adUnitID: "ca-app-pub-9404799280370656/8586668694")
-                        .frame(width: 320, height: 50)
-                        .padding(.top, 8)
-                        .padding(.bottom, 10)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.black.opacity(0.72))
-                }
             }
-        }
-        .onAppear {
-            prepareAdsAfterLaunch()
         }
         .sheet(isPresented: $showShareSheet) {
             if let url = midiFileURL {
                 ShareSheet(items: [url])
             }
-        }
-    }
-
-    private func prepareAdsAfterLaunch() {
-        guard UIDevice.current.userInterfaceIdiom == .phone else { return }
-        guard !ProcessInfo.processInfo.isiOSAppOnMac else { return }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            canLoadAds = true
         }
     }
 
@@ -855,47 +833,6 @@ struct ContentView: View {
         let engine = MIDIEngine()
         midiEngine = engine
         return engine
-    }
-}
-
-private struct AdMobBannerView: UIViewRepresentable {
-    let adUnitID: String
-
-    func makeUIView(context: Context) -> UIView {
-        let container = UIView(frame: .zero)
-        container.backgroundColor = .clear
-
-        DispatchQueue.main.async {
-            guard container.subviews.isEmpty else { return }
-            guard let rootViewController = UIApplication.shared.stellarisRootViewController else { return }
-
-            let banner = BannerView(adSize: AdSizeBanner)
-            banner.adUnitID = adUnitID
-            banner.rootViewController = rootViewController
-            banner.translatesAutoresizingMaskIntoConstraints = false
-            container.addSubview(banner)
-            NSLayoutConstraint.activate([
-                banner.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-                banner.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-                banner.widthAnchor.constraint(equalToConstant: 320),
-                banner.heightAnchor.constraint(equalToConstant: 50),
-            ])
-            banner.load(Request())
-        }
-
-        return container
-    }
-
-    func updateUIView(_ uiView: UIView, context: Context) {}
-}
-
-private extension UIApplication {
-    var stellarisRootViewController: UIViewController? {
-        connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .first { $0.activationState == .foregroundActive }?
-            .keyWindow?
-            .rootViewController
     }
 }
 

@@ -54,7 +54,7 @@ AGE_RATING = {
     "violenceRealistic": "NONE",
     "violenceRealisticProlongedGraphicOrSadistic": "NONE",
     "unrestrictedWebAccess": False,
-    "advertising": True,
+    "advertising": False,
     "messagingAndChat": False,
     "userGeneratedContent": False,
     "lootBox": False,
@@ -221,7 +221,7 @@ def patch_version(version_id):
                 "data": {
                     "type": "appStoreVersions",
                     "id": version_id,
-                    "attributes": {"copyright": "2026 Tokyo Nasu", "usesIdfa": True},
+                    "attributes": {"copyright": "2026 Tokyo Nasu", "usesIdfa": False},
                 }
             },
         ),
@@ -356,7 +356,7 @@ def patch_review_detail(version_id):
         "demoAccountPassword": "",
         "notes": (
             "STELLARIS is a standalone synthesizer app. No login is required. "
-            "The app includes AdMob banner ads and uses the uploaded build for version 1.0."
+            "This build does not include third-party advertising SDKs."
         ),
     }
     response = request("GET", f"/appStoreVersions/{version_id}/appStoreReviewDetail")
