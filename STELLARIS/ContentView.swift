@@ -65,18 +65,15 @@ struct ContentView: View {
         ZStack {
             StellarStageBackground()
 
-            GeometryReader { geo in
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 14) {
-                        heroDeck
-                        workspaceTabs
-                        tabContent
-                    }
-                    .padding(.horizontal, 14)
-                    .padding(.top, geo.safeAreaInsets.top + 12)
-                    .padding(.bottom, 18)
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 14) {
+                    heroDeck
+                    workspaceTabs
+                    tabContent
                 }
-                .ignoresSafeArea(.container, edges: .top)
+                .padding(.horizontal, 14)
+                .padding(.top, 12)
+                .padding(.bottom, 18)
             }
         }
         .sheet(isPresented: $showShareSheet) {
