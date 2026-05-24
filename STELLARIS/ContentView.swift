@@ -62,19 +62,19 @@ struct ContentView: View {
     @State private var selectedTab: WorkspaceTab = .sound
 
     var body: some View {
-        ZStack {
-            StellarStageBackground()
-
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 14) {
-                    heroDeck
-                    workspaceTabs
-                    tabContent
-                }
-                .padding(.horizontal, 14)
-                .padding(.top, 12)
-                .padding(.bottom, 18)
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 14) {
+                heroDeck
+                workspaceTabs
+                tabContent
             }
+            .padding(.horizontal, 14)
+            .padding(.top, 12)
+            .padding(.bottom, 18)
+        }
+        .background {
+            StellarStageBackground()
+                .ignoresSafeArea()
         }
         .sheet(isPresented: $showShareSheet) {
             if let url = midiFileURL {
@@ -851,7 +851,6 @@ private struct StellarStageBackground: View {
                         endPoint: .bottom
                     )
                 )
-            .ignoresSafeArea()
 
             Canvas { context, size in
                 for index in 0..<70 {
@@ -870,7 +869,6 @@ private struct StellarStageBackground: View {
                 }
                 context.stroke(path, with: .color(Color.stellarisTeal.opacity(0.08)), lineWidth: 1)
             }
-            .ignoresSafeArea()
 
             RadialGradient(
                 colors: [.stellarisAmber.opacity(0.2), .clear],
@@ -878,7 +876,6 @@ private struct StellarStageBackground: View {
                 startRadius: 30,
                 endRadius: 520
             )
-            .ignoresSafeArea()
 
             RadialGradient(
                 colors: [.stellarisTeal.opacity(0.24), .clear],
@@ -886,7 +883,6 @@ private struct StellarStageBackground: View {
                 startRadius: 40,
                 endRadius: 560
             )
-            .ignoresSafeArea()
         }
     }
 }
