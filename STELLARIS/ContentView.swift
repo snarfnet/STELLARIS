@@ -70,7 +70,7 @@ struct ContentView: View {
             }
             .padding(.horizontal, 14)
             .padding(.bottom, 18)
-            .safeAreaPadding(.top, 8)
+            .padding(.top, 1)
         }
         .background {
             StellarStageBackground()
