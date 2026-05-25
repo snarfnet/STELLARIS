@@ -62,15 +62,21 @@ struct ContentView: View {
     @State private var selectedTab: WorkspaceTab = .sound
 
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(spacing: 14) {
-                heroDeck
-                workspaceTabs
-                tabContent
+        VStack(spacing: 0) {
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 14) {
+                    heroDeck
+                    workspaceTabs
+                    tabContent
+                }
+                .padding(.horizontal, 14)
+                .padding(.bottom, 18)
+                .padding(.top, 1)
             }
-            .padding(.horizontal, 14)
-            .padding(.bottom, 18)
-            .padding(.top, 1)
+
+            AdMobBannerView()
+                .frame(height: 50)
+                .background(Color.black.opacity(0.82))
         }
         .background {
             StellarStageBackground()

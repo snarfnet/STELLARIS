@@ -12,6 +12,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
       - name: Show Xcode version
         run: xcodebuild -version
 
@@ -25,6 +31,12 @@ jobs:
           mkdir -p "$HOME/.appstoreconnect/private_keys"
           cp "$RUNNER_TEMP/asc/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8" "$HOME/.appstoreconnect/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8"
           echo "ASC_KEY_PATH=$RUNNER_TEMP/asc/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8" >> "$GITHUB_ENV"
+
+      - name: Resolve packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project STELLARIS.xcodeproj \
+            -scheme STELLARIS
 
       - name: Build archive
         env:
