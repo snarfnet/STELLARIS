@@ -69,8 +69,8 @@ struct ContentView: View {
                 tabContent
             }
             .padding(.horizontal, 14)
-            .padding(.top, 12)
             .padding(.bottom, 18)
+            .safeAreaPadding(.top, 8)
         }
         .background {
             StellarStageBackground()
