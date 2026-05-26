@@ -6,6 +6,10 @@ import AppTrackingTransparency
 struct STELLARISApp: App {
     @State private var attRequested = false
 
+    init() {
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -14,11 +18,7 @@ struct STELLARISApp: App {
                     guard !attRequested else { return }
                     attRequested = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                        ATTrackingManager.requestTrackingAuthorization { _ in
-                            DispatchQueue.main.async {
-                                MobileAds.shared.start()
-                            }
-                        }
+                        ATTrackingManager.requestTrackingAuthorization { _ in }
                     }
                 }
         }
