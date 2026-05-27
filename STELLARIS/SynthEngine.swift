@@ -69,7 +69,10 @@ class SynthEngine: NSObject, ObservableObject {
                 print("Audio session error: \(error)")
             }
 
-            let format = AVAudioFormat(standardFormatWithSampleRate: Double(sampleRate), channels: 1)!
+            guard let format = AVAudioFormat(standardFormatWithSampleRate: Double(sampleRate), channels: 1) else {
+                print("Failed to create AVAudioFormat")
+                return
+            }
 
             engine.attach(filter)
             engine.attach(reverb)
@@ -106,7 +109,10 @@ class SynthEngine: NSObject, ObservableObject {
     }
 
     private func startAudioGeneration(id: Int) {
-        let format = AVAudioFormat(standardFormatWithSampleRate: Double(sampleRate), channels: 1)!
+        guard let format = AVAudioFormat(standardFormatWithSampleRate: Double(sampleRate), channels: 1) else {
+            print("Failed to create AVAudioFormat in startAudioGeneration")
+            return
+        }
         let bufferSize: AVAudioFrameCount = AVAudioFrameCount(sampleRate)
         guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: bufferSize) else { return }
 
