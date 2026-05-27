@@ -6,14 +6,13 @@ import AppTrackingTransparency
 struct STELLARISApp: App {
     @State private var attRequested = false
 
-    init() {
-        GADMobileAds.sharedInstance().start(completionHandler: nil)
-    }
-
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(.dark)
+                .onAppear {
+                    MobileAds.shared.start()
+                }
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
                     guard !attRequested else { return }
                     attRequested = true
